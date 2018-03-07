@@ -1,0 +1,236 @@
+<html>
+
+<head></head>
+
+<body>
+
+    <div class="taixiu">
+        <div class="game-area">
+            <div class="default-box" id="box">
+                <img src="./holderboxv2.png" id="imgbox" alt="">
+            </div>
+            <div class="dice">
+                <img src="./1.png" alt="" id="dice1" width="140">
+                <img src="./2.png" alt="" id="dice2" width="140">
+                <img src="./3.png" alt="" id="dice3" width="140">
+            </div>
+            <!-- <div>
+            <p id="point">0</p>
+        </div> -->
+            <div class="result">
+                <img src="./tai.png" class="result-img">
+            </div>
+        </div>
+
+        <div class="func-area">
+            <button type="button" class="btn btn-success" id="open-game">Mở sòng</button>
+            <button type="button" class="btn btn-danger" id="close-game" disabled>Đóng sòng</button>
+            <button type="button" class="btn btn-warning" id="open-dice-box" disabled>Khui</button>
+            <button type="button" class="btn btn-success" id="gen-chip-tai">Đặt tài</button>
+            <button type="button" class="btn btn-success" id="gen-chip-xiu">Đặt xiu</button>
+
+        </div>
+
+        <div style="flex:1.5;margin-top:15%;background:red" id="tai-board">
+        </div>
+        <div style="flex:1.5;margin-top:15%;background:black;" id="xiu-board">
+        </div>
+    </div>
+
+</body>
+<link rel="stylesheet" href="./jquery-ui.css">
+<script src="./jquery-1.12.4.js"></script>
+<script src="./jquery-ui.js"></script>
+<script src="./bootstrap.min.js"></script>
+<link rel="stylesheet" href="./bootstrap.min.css">
+
+<style>
+    .taixiu {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .default-box {
+        position: absolute;
+        top: 200px;
+        z-index: 2;
+        cursor: pointer;
+        transition: all 0.1s linear;
+    }
+
+    .box-up {
+        top: 40px !important;
+        z-index: 2;
+        transition: all 1s linear;
+    }
+
+    .dice {
+        position: absolute;
+        z-index: 1;
+        left: 90px;
+        top: 600px;
+    }
+
+    .dice img {
+        margin: -20px;
+    }
+
+    .result {
+        position: absolute;
+        top: 600px;
+        left: 380px;
+        z-index: 1;
+        visibility: hidden;
+
+    }
+
+    .result-appear {
+        visibility: visible;
+        left: 420px;
+        transition: all 0.8s linear;
+
+    }
+
+    .result-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .game-area {
+        flex: 2;
+    }
+
+    .func-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-top: 25%;
+    }
+
+    .func-area button {
+        margin: 5px;
+        width: 140px;
+        font-size: 24px;
+    }
+
+    .chip-token {
+        position: absolute;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        z-index: 5;
+        top: -50px;
+        background: black;
+        box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
+
+    }
+
+    .chip-token p {
+        text-align: center;
+        transform: translateY(50%);
+        color: #fff;
+        font-weight: bold;
+
+    }
+</style>
+<script>
+    var isOpen = false;
+    var stt = 0;
+    var sTai = 0;
+    var sXiu = 0;
+    // show the result of those dices
+
+    $("#open-dice-box").click(function () {
+        if (isOpen) {
+            if (!$("#box").hasClass("box-up")) {
+                $("#box").addClass("box-up");
+                $(".dice img").effect("shake", {
+                    times: 15
+                }, 200);
+            }
+            var x = Math.floor((Math.random() * 6) + 1);
+            var y = Math.floor((Math.random() * 6) + 1);
+            var z = Math.floor((Math.random() * 6) + 1);
+            $("#dice1").attr("src", "./" + x + ".png");
+            $("#dice2").attr("src", "./" + y + ".png");
+            $("#dice3").attr("src", "./" + z + ".png");
+            if ((x + y + z) >= 4 && (x + y + z) <= 10) {
+                // $("#point").text((x + y + z) + " xỉu");
+                setTimeout(function () {
+                    $(".result-img").attr("src", "./xiu.png");
+                    $(".result").addClass("result-appear");
+                    $("#tai-board").empty();
+                }, 1000);
+
+
+            } else if ((x + y + z) >= 11 && (x + y + z) <= 17) {
+                // $("#point").text((x + y + z) + " tài");
+                setTimeout(function () {
+                    $(".result-img").attr("src", "./tai.png");
+                    $(".result").addClass("result-appear");
+                    $("#xiu-board").empty();
+                }, 1000);
+
+            }
+            $("#open-dice-box").attr('disabled', 'disabled');
+            setTimeout(function () {
+                $("#open-game").removeAttr("disabled");
+            }, 1500);
+
+        }
+    });
+
+    //open beting for player
+
+    $("#open-game").click(function () {
+        isOpen = true;
+        $("#open-game").attr('disabled', 'disabled');
+        $("#close-game").removeAttr("disabled");
+        $("#tai-board").empty();
+        $("#xiu-board").empty();
+    });
+
+    //close beting
+
+    $("#close-game").click(function () {
+        $("#close-game").attr('disabled', 'disabled');
+        $(".result").removeClass("result-appear");
+        $("#box").removeClass("box-up").queue(function () {
+            $("#imgbox").effect("shake", {
+                times: 4
+            }, 500);
+        }).dequeue();
+        setTimeout(function () {
+            $("#open-dice-box").removeAttr("disabled");
+        }, 1000);
+    });
+
+    $("#gen-chip-tai").click(function () {
+        let randomNumber = Math.floor((Math.random() * 100) + 1);
+        let topDrop = Math.floor((Math.random() * 387) + 260);
+        let leftrightDrop = Math.floor((Math.random() * 350) + 860);
+        $("#tai-board").append("<div class='chip-token' id='chip" + (stt) + "'> <p>" + randomNumber +
+            " </p> </div>");
+        $("#chip" + (stt) + "").css("left", leftrightDrop);
+        $("#chip" + (stt++) + "").animate({
+            top: topDrop
+        });
+        sTai += randomNumber;
+    });
+
+    $("#gen-chip-xiu").click(function () {
+        let randomNumber = Math.floor((Math.random() * 100) + 1);
+        let topDrop = Math.floor((Math.random() * 387) + 268);
+        let leftrightDrop = Math.floor((Math.random() * 350) + 1300);
+        $("#xiu-board").append("<div class='chip-token' id='chip" + (stt) + "'> <p>" + randomNumber +
+            " </p> </div>");
+        $("#chip" + (stt) + "").css("left", leftrightDrop);
+        $("#chip" + (stt++) + "").animate({
+            top: topDrop
+        });
+        sXiu += randomNumber;
+
+    });
+</script>
+
+</html>
