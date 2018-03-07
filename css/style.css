@@ -1,0 +1,112 @@
+.taixiu {
+    display: flex;
+    flex-direction: row;
+}
+
+.default-box {
+    position: absolute;
+    top: 200px;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.1s linear;
+}
+
+.box-up {
+    top: 40px !important;
+    z-index: 2;
+    transition: all 1s linear;
+}
+
+.dice {
+    position: absolute;
+    z-index: 1;
+    left: 90px;
+    top: 600px;
+}
+
+.dice img {
+    margin: -20px;
+}
+
+.result {
+    position: absolute;
+    top: 600px;
+    left: 380px;
+    z-index: 1;
+    visibility: hidden;
+}
+
+.result-appear {
+    visibility: visible;
+    left: 420px;
+    transition: all 0.8s linear;
+}
+
+.result-img {
+    width: 100px;
+    height: 100px;
+}
+
+.game-area {
+    flex: 2;
+}
+
+.func-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: 25%;
+}
+
+.func-area button {
+    margin: 5px;
+    width: 140px;
+    font-size: 24px;
+}
+
+.chip-token {
+    position: absolute;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    z-index: 5;
+    top: -50px;
+    background: black;
+    box-shadow: 0 0 25px rgba(255, 255, 0, 0.8);
+}
+
+.chip-token p {
+    text-align: center;
+    transform: translateY(50%);
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.beting-board {
+    flex: 3;
+    margin-top: 15%;
+    display: flex;
+    flex-direction: row;
+    border-radius: 8%;
+    background: url("../assets/126690.jpg") no-repeat;
+    background-size:1000px 500px;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+}
+
+.tai-board {
+    flex: 1;
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    border: solid red 5px;
+    background: url("../assets/tai.png") no-repeat;
+    background-position:80px 80px;
+    background-size: 250px 250px;
+}
+
+.xiu-board {
+    flex: 1;
+    border-top-right-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border: solid black 5px;
+}
